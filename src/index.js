@@ -27,7 +27,7 @@ app.use('/realTimeProducts', express.static(path.join(__dirname, "/public")))
 app.use('/chat', express.static(path.join(__dirname, "/public")))
 
 
-mongoose.connect("mongodb+srv://JCAguss:db061299JACM@cluster0.zeqxg3a.mongodb.net/?retryWrites=true&w=majority")
+mongoose.connect("mongodb+srv://JCAguss:<password>@cluster0.zeqxg3a.mongodb.net/?retryWrites=true&w=majority")
 .then(async() => {
     console.log('BDD conectada')
     const res = await cartModel.findOne({_id:'64ff5f57ddf4e37b81ab3de0'})
