@@ -1,5 +1,10 @@
+import 'dotenv/config'
 import express from "express";
 import mongoose from "mongoose";
+import cookieParser from 'cookie-parser';
+import session from 'express-session';
+import MongoStore from 'connect-mongo';
+import sessionRouter from './routes/session.routes.js';
 import userRouter from "./routes/users.routes.js"
 import productRouter from "./routes/products.routes.js";
 import cartRouter from './routes/carts.routes.js'
@@ -9,25 +14,48 @@ import { __dirname } from "./path.js";
 import  path  from "path";
 import { cartModel } from "./models/carts.models.js";
 
+// ---- Server ----
 const app = express();
 const PORT = 8080;
-
 
 const server = app.listen(PORT, () => {
     console.log(`Server on port ${PORT}`)
 })
 
-
+// ---- Middlewares ----
 app.use(express.json())
 app.use(express.urlencoded({ extended:true }))
 app.engine("handlebars", engine())
 app.set('view engine', 'handlebars')
 app.set('views', path.resolve(__dirname, './views'))
+app.use('/login', express.static(path.join(__dirname, "/public")))
 app.use('/realTimeProducts', express.static(path.join(__dirname, "/public")))
 app.use('/chat', express.static(path.join(__dirname, "/public")))
+app.use(cookieParser(process.env.SIGNED_COOKIE))
+app.use(session({
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGO_URL,
+        mongoOptions: {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        },
+        ttl: 60
+    }),
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false
+}))
 
+// // ---- Verificion de Usuario Admin ----
+// const auth = (req,res,next) => {
+//     if(req.session.email == 'admin@admin.com' && res.session.password == '1234'){
+//         return next()
+//     }
+//     res.send("No tienes acceso a esta Ruta")
+// }
 
-mongoose.connect("mongodb+srv://JCAguss:<password>@cluster0.zeqxg3a.mongodb.net/?retryWrites=true&w=majority")
+// ---- BBD ----
+mongoose.connect(process.env.MONGO_URL)
 .then(async() => {
     console.log('BDD conectada')
     const res = await cartModel.findOne({_id:'64ff5f57ddf4e37b81ab3de0'})
@@ -35,7 +63,7 @@ mongoose.connect("mongodb+srv://JCAguss:<password>@cluster0.zeqxg3a.mongodb.net/
 })
 .catch(()=>console.log("error en conectar en BDD"))
 
-//Server socket.io
+// ---- Server socket.io ----
 
 const io = new Server(server)
 const mensajes = []
@@ -62,16 +90,49 @@ io.on('connection', (socket) => {
     })
 })
 
+// ---- Routes ----
 app.use('/api/users', userRouter)
 app.use('/api/products', productRouter)
 app.use('/api/carts', cartRouter)
+app.use('/api/sessions', sessionRouter)
+
+app.get('setCookie',(req,res)=>{
+    res.cookie('CookieCookie','Esto es una cookie',{ maxAge:10000, signed: true }).send('Cookie generada')
+})
+
+
+app.get('getCookie',(req,res)=>{
+    res.send(req.signedCookies)
+})
+
+app.get('/session', (req,res) => {
+    if(req.session.counter){
+        req.session.counter++
+        res.send(`Ingreso ${req.session.counter} veces`)
+    } else {
+        req.session.counter = 1
+        res.send("Ingreso por Primera vez")
+    }
+})
+
+
+
+// app.get('/admin', (req,res)=>{
+//     res.send('Soy Admin')
+// })
+app.get('/login',(req,res)=>{
+    res.render('login',{
+        css: 'login.css',
+        title: "login-e-commerce",
+        js: "login.js"
+    })
+})
 
 app.get('/realTimeProducts', (req, res) => {
     res.render('realTimeProducts', {
         css: "style.css",
         title: "Products",
         js: "realTimeProducts.js"
-
     })
 })
 app.get('/chat', (req, res) => {

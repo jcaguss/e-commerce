@@ -1,0 +1,15 @@
+<form class="formulario" id="formulario" > 
+    <div class="formilario__grupo" id="grupo__email" >
+        <label for="email" class="formulario__lable">Email:</label>
+    <div class="formulario__grupo-input">
+        <input class="formulario__input" onblur="cargarErrores('email','formulario__input-error');" type="email" placeholder="Email" name="email" id="email">
+    </div>
+    <div id="formulario__input-error"></div>
+    <label for="password" class="formulario__lable">Contraseña:</label>
+    <div class="formulario__grupo-input">
+        <input class="formulario__input" onblur="cargarErrores('password','formulario__input-error1');" type="password" placeholder=" Password " name="password" id="password">
+    </div>
+    <div id="formulario__input-error1"></div>
+    <button class="formulario__button transition" type="submit">Sign in</button>
+    </div>  
+</form>
