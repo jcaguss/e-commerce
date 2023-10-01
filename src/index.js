@@ -2,6 +2,8 @@ import 'dotenv/config'
 import express from "express";
 import mongoose from "mongoose";
 import cookieParser from 'cookie-parser';
+import passport from 'passport';
+import initializePassport from './config/passport.js'
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import sessionRouter from './routes/session.routes.js';
@@ -45,6 +47,11 @@ app.use(session({
     resave: false,
     saveUninitialized: false
 }))
+
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
+
 
 // // ---- Verificion de Usuario Admin ----
 // const auth = (req,res,next) => {
