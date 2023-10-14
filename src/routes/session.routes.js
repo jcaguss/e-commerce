@@ -1,7 +1,7 @@
 import { Router } from "express";
 import passport from "passport";
-
-
+import { passportError, authorization } from "../utils/messagesError.js";
+import { generateToken } from '../utils/jwt.js'
 
 const sessionRouter = Router()
 
@@ -17,6 +17,10 @@ sessionRouter.post('/login', passport.authenticate('login'), async (req,res) => 
             email: req.user.email
         }
 
+        const token = generateToken(req.user)
+        res.cookie('jwtCookie', token, {
+            maxAge: 43200000 //12H
+        })
         res.status(200).send({payload: req.user})
         //res.redirect('/realTimeProducts', 200, {payload: req.user})
 
@@ -54,7 +58,16 @@ sessionRouter.get('/logaut', (req,res)=>{
     if(req.session.login){
         req.session.destroy()
     }
+    res.clearCookie('jwtCookie')
     res.redirect("/login", 200, {resultado: 'Usuario deslogueado'})
+})
+
+sessionRouter.get('/testJWT', passport.authenticate('jwt', {session: false}), (req,res) => {
+    res.send(req.user)
+})
+
+sessionRouter.get('/current', passportError('jwt'), authorization('user'), (req,res) => {
+    res.send(req.user)
 })
 
 export default sessionRouter;

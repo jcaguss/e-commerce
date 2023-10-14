@@ -5,11 +5,8 @@ import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import initializePassport from './config/passport.js'
 import session from 'express-session';
+import router from './routes/index.routes.js';
 import MongoStore from 'connect-mongo';
-import sessionRouter from './routes/session.routes.js';
-import userRouter from "./routes/users.routes.js"
-import productRouter from "./routes/products.routes.js";
-import cartRouter from './routes/carts.routes.js'
 import { engine } from "express-handlebars";
 import { Server } from "socket.io";
 import { __dirname } from "./path.js";
@@ -27,13 +24,18 @@ const server = app.listen(PORT, () => {
 // ---- Middlewares ----
 app.use(express.json())
 app.use(express.urlencoded({ extended:true }))
-app.engine("handlebars", engine())
+//----------------
+app.engine("handlebars", engine()) // img
+//----------------
 app.set('view engine', 'handlebars')
-app.set('views', path.resolve(__dirname, './views'))
+app.set('views', path.resolve(__dirname, './views'))//Path
+//----------------
 app.use('/login', express.static(path.join(__dirname, "/public")))
 app.use('/realTimeProducts', express.static(path.join(__dirname, "/public")))
 app.use('/chat', express.static(path.join(__dirname, "/public")))
-app.use(cookieParser(process.env.SIGNED_COOKIE))
+//----------------
+app.use(cookieParser(process.env.SIGNED_COOKIE)) // Firma Cookie
+//----------------
 app.use(session({
     store: MongoStore.create({
         mongoUrl: process.env.MONGO_URL,
@@ -47,11 +49,13 @@ app.use(session({
     resave: false,
     saveUninitialized: false
 }))
-
+//----- Passport -----
 initializePassport()
 app.use(passport.initialize())
 app.use(passport.session())
 
+//----- Rutas -----
+app.use('/', router)
 
 // // ---- Verificion de Usuario Admin ----
 // const auth = (req,res,next) => {
@@ -69,6 +73,9 @@ mongoose.connect(process.env.MONGO_URL)
     console.log(JSON.stringify(res))
 })
 .catch(()=>console.log("error en conectar en BDD"))
+
+
+
 
 // ---- Server socket.io ----
 
@@ -97,36 +104,33 @@ io.on('connection', (socket) => {
     })
 })
 
-// ---- Routes ----
-app.use('/api/users', userRouter)
-app.use('/api/products', productRouter)
-app.use('/api/carts', cartRouter)
-app.use('/api/sessions', sessionRouter)
 
-app.get('setCookie',(req,res)=>{
-    res.cookie('CookieCookie','Esto es una cookie',{ maxAge:10000, signed: true }).send('Cookie generada')
-})
+// app.get('setCookie',(req,res)=>{
+//     res.cookie('CookieCookie','Esto es una cookie',{ maxAge:10000, signed: true }).send('Cookie generada')
+// })
 
 
-app.get('getCookie',(req,res)=>{
-    res.send(req.signedCookies)
-})
+// app.get('getCookie',(req,res)=>{
+//     res.send(req.signedCookies)
+// })
 
-app.get('/session', (req,res) => {
-    if(req.session.counter){
-        req.session.counter++
-        res.send(`Ingreso ${req.session.counter} veces`)
-    } else {
-        req.session.counter = 1
-        res.send("Ingreso por Primera vez")
-    }
-})
+// app.get('/session', (req,res) => {
+//     if(req.session.counter){
+//         req.session.counter++
+//         res.send(`Ingreso ${req.session.counter} veces`)
+//     } else {
+//         req.session.counter = 1
+//         res.send("Ingreso por Primera vez")
+//     }
+// })
 
 
 
 // app.get('/admin', (req,res)=>{
 //     res.send('Soy Admin')
 // })
+
+
 app.get('/login',(req,res)=>{
     res.render('login',{
         css: 'login.css',
