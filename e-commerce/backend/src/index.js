@@ -1,5 +1,6 @@
 import 'dotenv/config'
 import express from "express";
+import cors from 'cors';
 import mongoose from "mongoose";
 import cookieParser from 'cookie-parser';
 import passport from 'passport';
@@ -13,6 +14,18 @@ import { __dirname } from "./path.js";
 import  path  from "path";
 import { cartModel } from "./models/carts.models.js";
 
+const whiteList = ['http://localhost:5173']
+
+const corsOptions = {
+    origin: function(origin,callback){
+        if(whiteList.indexOf(origin) != -1 || !origin){
+            callback(null,true)
+        }else{
+            callback(new Error("Acceso denegado"))
+        }
+    }
+}
+
 // ---- Server ----
 const app = express();
 const PORT = 8080;
@@ -21,7 +34,19 @@ const server = app.listen(PORT, () => {
     console.log(`Server on port ${PORT}`)
 })
 
+// ---- BBD ----
+mongoose.connect(process.env.MONGO_URL)
+.then(async() => {
+    console.log('BDD conectada')
+    const res = await cartModel.findOne({_id:'64ff5f57ddf4e37b81ab3de0'})
+    console.log(JSON.stringify(res))
+})
+.catch(()=>console.log("error en conectar en BDD"))
+
+
 // ---- Middlewares ----
+app.use(cors(corsOptions))
+//----------------
 app.use(express.json())
 app.use(express.urlencoded({ extended:true }))
 //----------------
@@ -65,14 +90,6 @@ app.use('/', router)
 //     res.send("No tienes acceso a esta Ruta")
 // }
 
-// ---- BBD ----
-mongoose.connect(process.env.MONGO_URL)
-.then(async() => {
-    console.log('BDD conectada')
-    const res = await cartModel.findOne({_id:'64ff5f57ddf4e37b81ab3de0'})
-    console.log(JSON.stringify(res))
-})
-.catch(()=>console.log("error en conectar en BDD"))
 
 
 

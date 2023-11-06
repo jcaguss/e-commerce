@@ -18,11 +18,9 @@ sessionRouter.post('/login', passport.authenticate('login'), async (req,res) => 
         }
 
         const token = generateToken(req.user)
-        res.cookie('jwtCookie', token, {
-            maxAge: 43200000 //12H
-        })
-        res.status(200).send({payload: req.user})
-        //res.redirect('/realTimeProducts', 200, {payload: req.user})
+
+        //res.status(200).send({token})
+        res.redirect('/realTimeProducts', 200, {token})
 
     }catch(error){
         res.status(500).send({mensaje: `Error al iniciar sesion ${error}`})

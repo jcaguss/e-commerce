@@ -1,4 +1,5 @@
-export const Register = () => {
+
+export const Products = () => {
     return (
         <div></div>
     )

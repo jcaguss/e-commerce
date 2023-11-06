@@ -1,6 +1,7 @@
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
-import {Register} from './components/Register.jsx'
-import {Login} from './components/Login.jsx'
+import {Register} from './components/Register';
+import { Login } from './components/login';
+import { Products } from './components/Products';
 
 export const App = () => {
   return (
@@ -9,6 +10,7 @@ export const App = () => {
         <Routes>
           <Route path='/register' element={<Register/>}/>
           <Route path='/login' element={<Login/>}/>
+          <Route path='/products' element={<Products/>}/>
         </Routes>
       </BrowserRouter>
     </>
