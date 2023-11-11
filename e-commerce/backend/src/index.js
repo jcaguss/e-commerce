@@ -8,8 +8,8 @@ import initializePassport from './config/passport.js'
 import session from 'express-session';
 import router from './routes/index.routes.js';
 import MongoStore from 'connect-mongo';
-import { engine } from "express-handlebars";
-import { Server } from "socket.io";
+// import { engine } from "express-handlebars";
+// import { Server } from "socket.io";
 import { __dirname } from "./path.js";
 import  path  from "path";
 
@@ -49,14 +49,14 @@ app.use(cors(corsOptions))
 app.use(express.json())
 app.use(express.urlencoded({ extended:true }))
 //----------------
-app.engine("handlebars", engine()) // img
+// app.engine("handlebars", engine()) // img
 //----------------
-app.set('view engine', 'handlebars')
+// app.set('view engine', 'handlebars')
 app.set('views', path.resolve(__dirname, './views'))//Path
 //----------------
-app.use('/login', express.static(path.join(__dirname, "/public")))
-app.use('/realTimeProducts', express.static(path.join(__dirname, "/public")))
-app.use('/chat', express.static(path.join(__dirname, "/public")))
+// app.use('/login', express.static(path.join(__dirname, "/public")))
+// app.use('/realTimeProducts', express.static(path.join(__dirname, "/public")))
+// app.use('/chat', express.static(path.join(__dirname, "/public")))
 //----------------
 app.use(cookieParser(process.env.SIGNED_COOKIE)) // Firma Cookie
 //----------------
@@ -95,30 +95,30 @@ app.use('/', router)
 
 // ---- Server socket.io ----
 
-const io = new Server(server)
-const mensajes = []
-const prods = []
-io.on('connection', (socket) => {
-    console.log("Servidor Socket.io conectado")
-    socket.on('mensajeConexion', (user) => {
-        if (user.rol === "Admin") {
-            socket.emit('credencialesConexion', "Usuario valido")
-        } else {
-            socket.emit('credencialesConexion', "Usuario no valido")
-        }
-    })
+// const io = new Server(server)
+// const mensajes = []
+// const prods = []
+// io.on('connection', (socket) => {
+//     console.log("Servidor Socket.io conectado")
+//     socket.on('mensajeConexion', (user) => {
+//         if (user.rol === "Admin") {
+//             socket.emit('credencialesConexion', "Usuario valido")
+//         } else {
+//             socket.emit('credencialesConexion', "Usuario no valido")
+//         }
+//     })
 
-    socket.on('mensaje', (infoMensaje) => {
-        console.log(infoMensaje)
-        mensajes.push(infoMensaje)
-        socket.emit('mensajes', mensajes)
-    })
+//     socket.on('mensaje', (infoMensaje) => {
+//         console.log(infoMensaje)
+//         mensajes.push(infoMensaje)
+//         socket.emit('mensajes', mensajes)
+//     })
 
-    socket.on('nuevoProducto', (nuevoProd) => {
-        prods.push(nuevoProd)
-        socket.emit('prods', prods)
-    })
-})
+//     socket.on('nuevoProducto', (nuevoProd) => {
+//         prods.push(nuevoProd)
+//         socket.emit('prods', prods)
+//     })
+// })
 
 
 // app.get('setCookie',(req,res)=>{
@@ -147,25 +147,25 @@ io.on('connection', (socket) => {
 // })
 
 
-app.get('/login',(req,res)=>{
-    res.render('login',{
-        css: 'login.css',
-        title: "login-e-commerce",
-        js: "login.js"
-    })
-})
+// app.get('/login',(req,res)=>{
+//     res.render('login',{
+//         css: 'login.css',
+//         title: "login-e-commerce",
+//         js: "login.js"
+//     })
+// })
 
-app.get('/realTimeProducts', (req, res) => {
-    res.render('realTimeProducts', {
-        css: "style.css",
-        title: "Products",
-        js: "realTimeProducts.js"
-    })
-})
-app.get('/chat', (req, res) => {
-    res.render('chat', {
-        css: "style.css",
-        title: "Chats",
-        js: "chat.js"
-    })
-})
+// app.get('/realTimeProducts', (req, res) => {
+//     res.render('realTimeProducts', {
+//         css: "style.css",
+//         title: "Products",
+//         js: "realTimeProducts.js"
+//     })
+// })
+// app.get('/chat', (req, res) => {
+//     res.render('chat', {
+//         css: "style.css",
+//         title: "Chats",
+//         js: "chat.js"
+//     })
+// })

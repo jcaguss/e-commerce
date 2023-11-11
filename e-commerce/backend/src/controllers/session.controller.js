@@ -5,16 +5,16 @@ export const postLogin = async (req,res) => {
         if(!req.user){
             return res.status(401).send({mensaje: 'Usuario invalido'})
         }
-        req.session.user = {
-            first_name: req.user.first_name,
-            last_name: req.user.last_name,
-            age: req.user.age,
-            email: req.user.email
-        }
+        // req.session.user = {
+        //     first_name: req.user.first_name,
+        //     last_name: req.user.last_name,
+        //     age: req.user.age,
+        //     email: req.user.email
+        //     res.status(200).send({mensaje: 'Usuario logueado'})
+        // }
         const token = generateToken(req.user)
-        console.log(token)
         res.status(200).send({token})
-        //res.redirect('/realTimeProducts', 200, {token})
+        res.redirect('/products', 200, {token})
     }catch(error){
         res.status(500).send({mensaje: `Error al iniciar sesion ${error}`})
     }
@@ -26,7 +26,7 @@ export const postRegister = async (req,res) => {
             return res.status(400).send({mensaje: 'Usuario ya existente'})
         }
         res.status(200).send({payload: 'Usuario registrado'})
-        //res.redirect('/login', 200, {payload: 'Usuario registrado'})
+        res.redirect('/login', 200, {payload: 'Usuario registrado'})
     }catch(error){
         res.status(500).send({mensaje: `Error al registrar usuario ${error}`})
     }
@@ -39,7 +39,7 @@ export const getGitHubRegister = async (req,res) => {
 export const getGitHubLogin = async (req,res) => {
     req.session.user = req.user
     res.status(200).send({mensaje: 'Usuario logueado'})
-    //res.redirect('/realTimeProducts', 200, {mensaje: 'Usuario logueado'})
+    res.redirect('/products', 200, {mensaje: 'Usuario logueado'})
 }
 
 export const getLogaut = (req,res)=>{

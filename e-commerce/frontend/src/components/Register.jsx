@@ -1,7 +1,8 @@
 import { useRef } from "react";
 import {useNavigate} from "react-router-dom"
 
-const formRef = useRef(null)
+export const Register = () => {
+const formRef = useRef(0)
     const navigate = useNavigate()
 
     const handleSubmit = async (e) => {
@@ -24,7 +25,6 @@ const formRef = useRef(null)
         }
     }
 
-export const Register = () => {
     return (
         <div className="container">
             <h2>Formulario Login</h2>
@@ -49,7 +49,7 @@ export const Register = () => {
                     <label htmlFor="password" className="form-label">Contraseña: </label>
                     <input type="password" name="password" className="form-control"/>
                 </div>
-                <button type="submit" className="btn btn-dark">Registrarse</button>
+                <button type="submit" className="btn btn-primary">Registrarse</button>
             </form>
         </div>
     )
