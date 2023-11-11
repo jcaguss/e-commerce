@@ -14,7 +14,9 @@ const ExtractJWT = jwt.ExtractJwt
 const initializePassport = () => {
 
     const cookieEstractor = req => {
-        const token = req.cookies.jwtCookie ? req.cookies.jwtCookie : {}
+        const token = req.cookies.jwtCookie 
+        ? req.cookies.jwtCookie 
+        : {}
         console.log(token)
         return token
     }

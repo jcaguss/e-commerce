@@ -12,6 +12,7 @@ export const postLogin = async (req,res) => {
             email: req.user.email
         }
         const token = generateToken(req.user)
+        console.log(token)
         res.status(200).send({token})
         //res.redirect('/realTimeProducts', 200, {token})
     }catch(error){

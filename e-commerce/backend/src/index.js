@@ -12,7 +12,6 @@ import { engine } from "express-handlebars";
 import { Server } from "socket.io";
 import { __dirname } from "./path.js";
 import  path  from "path";
-import { cartModel } from "./models/carts.models.js";
 
 const whiteList = ['http://localhost:5173']
 
@@ -38,8 +37,8 @@ const server = app.listen(PORT, () => {
 mongoose.connect(process.env.MONGO_URL)
 .then(async() => {
     console.log('BDD conectada')
-    const res = await cartModel.findOne({_id:'64ff5f57ddf4e37b81ab3de0'})
-    console.log(JSON.stringify(res))
+    // const res = await cartModel.findOne({_id:'64ff5f57ddf4e37b81ab3de0'})
+    // console.log(JSON.stringify(res))
 })
 .catch(()=>console.log("error en conectar en BDD"))
 

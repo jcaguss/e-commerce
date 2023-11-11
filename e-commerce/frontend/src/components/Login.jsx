@@ -17,10 +17,9 @@ export const Login = () => {
             },
             body: JSON.stringify(data)
         })
-        console.log(response)
         if(response.status == 200){
-            const datos = response.json()
-            document.cookie = `jwtCookie=${datos.token}; expires${new Date(Date.now() + 1 * 24 * 60 * 60 * 1000).toUTCString()}path=/`
+            const datos = await response.json()
+            document.cookie = `jwtCookie=${datos.token}; expires${new Date(Date.now() + 1 * 24 * 60 * 60 * 1000).toUTCString()}path=/;`
             navigate('/products')
         }else{
             console.log(response)
@@ -38,7 +37,7 @@ export const Login = () => {
                     <label htmlFor="password" className="form-label">Contraseña: </label>
                     <input type="password" name="password" className="form-control"/>
                 </div>
-                <button type="submit" className="btn btn-dark">Iniciar Session</button>
+                <button type="submit" className="btn btn-dark">Iniciar Sesión</button>
             </form>
         </div>
     )
