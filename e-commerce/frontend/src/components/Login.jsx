@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom"
 
 export const Login = () => {
     
-    const formRef = useRef(0)
+    const formRef = useRef(null)
     const navigate = useNavigate()
 
     const handleSubmit = async (e) => {

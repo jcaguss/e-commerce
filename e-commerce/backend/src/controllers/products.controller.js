@@ -8,10 +8,10 @@ export const getProduct = async (req,res) => {
     try{
         const prods = await productModel.paginate({query},{ limit, page, sort: { price: sort }})
         !prods 
-        ? res.status(404).send({error: "Productos no encontrados"})
+        ? res.status(404).send({mensaje: "Productos no encontrados"})
         : res.status(200).send({respuesta: 'ok', mensaje: prods})
     }catch(error){
-        res.status(500).send({error:`Error en consultar productos ${error}`})
+        res.status(500).send({mensaje:`Error en consultar productos ${error}`})
     }
 }
 
@@ -20,7 +20,7 @@ export const getProductById = async (req,res) => {
     try{
         const prods = await productModel.findById(id)
         !prods 
-        ? res.status(404).send({respuesta: 'error', mensaje: "Producto no encontrado"}) 
+        ? res.status(404).send({mensaje: "Producto no encontrado"}) 
         : res.status(200).send({respuesta: 'ok', mensaje: prods})
     }catch(error){
         res.status(500).send({error:`Error en consultar producto ${error}`})
@@ -32,12 +32,12 @@ export const postProduct = async (req,res) => {
     try{
         const prod = await productModel.create({title, description, code, price, stock, category})
         !prod
-        ? res.status(400).send({error: "Error en crear Producto"})
+        ? res.status(400).send({mensaje: "Error en crear Producto"})
         : res.status(201).send({respuesta: 'ok', mensaje: prod})
     }catch(error){
         error.code == 11000 // -El error code "11000" es de llave duplicada-
-        ? res.status(400).send({error: "Producto ya creado con llave duplicada"})
-        : res.status(500).send({error:`Error en crear Producto ${error}`})
+        ? res.status(400).send({mensaje: "Producto ya creado con llave duplicada"})
+        : res.status(500).send({mensaje:`Error en crear Producto ${error}`})
     }
 }
 export const putProductById = async (req,res) => {
@@ -46,10 +46,10 @@ export const putProductById = async (req,res) => {
     try{
         const prod = await productModel.findByIdAndUpdate(id, {title, description, code, price, status, stock, category})
         !prod 
-        ? res.status(404).send({error: "Producto no encontrado"}) 
+        ? res.status(404).send({mensaje: "Producto no encontrado"}) 
         : res.status(200).send({respuesta: 'ok', mensaje: prod})
     }catch(error){
-        res.status(500).send({error:`Error en actualizar producto ${error}`})
+        res.status(500).send({mensaje:`Error en actualizar producto ${error}`})
     }
 }
 
@@ -58,9 +58,9 @@ export const deleteProductById = async (req,res) => {
     try{
         const prod = await productModel.findByIdAndDelete(id)
         !prod 
-        ? res.status(404).send({error: "Producto no encotrado"}) 
+        ? res.status(404).send({mensaje: "Producto no encotrado"}) 
         : res.status(200).send({respuesta: 'ok', mensaje: prod})
     }catch(error){
-        res.status(500).send({error:`Error en eliminar producto ${error}`})
+        res.status(500).send({mensaje:`Error en eliminar producto ${error}`})
     }
 }
