@@ -4,6 +4,7 @@ import jwt from "passport-jwt"
 import passport from 'passport'
 import { createHash, validatePassword } from '../utils/bcrypt.js'
 import {userModel} from '../models/users.models.js'
+import 'dotenv/config'
 
 // ---- Defino la estrategia a utilizar ----
 const LocalStrategy = local.Strategy
@@ -14,10 +15,9 @@ const ExtractJWT = jwt.ExtractJwt
 const initializePassport = () => {
 
     const cookieEstractor = req => {
-        const token = req.cookies.jwtCookie 
-        ? req.cookies.jwtCookie 
+        const token = req.headers.authorization 
+        ? req.headers.authorization 
         : {}
-        console.log(token)
         return token
     }
 

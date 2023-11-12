@@ -65,7 +65,7 @@ export const postProdCart = async (req,res) => {
                     cart.products.push({ id_prod: pid, quantity: quantity })
                 }
                 const respuesta = await cartModel.findByIdAndUpdate(cid, cart)
-                res.status(200).send({ respuesta: 'OK', mensaje: respuesta })
+                res.status(201).send({ respuesta: 'OK', mensaje: respuesta })
             } else {
                 res.status(404).send({ error: 'Producto no encontrado' })
             }

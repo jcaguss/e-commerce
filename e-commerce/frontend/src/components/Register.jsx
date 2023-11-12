@@ -2,7 +2,7 @@ import { useRef } from "react";
 import {useNavigate} from "react-router-dom"
 
 export const Register = () => {
-const formRef = useRef(null)
+    const formRef = useRef(null)
     const navigate = useNavigate()
 
     const handleSubmit = async (e) => {
@@ -28,19 +28,19 @@ const formRef = useRef(null)
 
     return (
         <div className="container">
-            <h2>Formulario Login</h2>
+            <h2>Formulario Register</h2>
             <form onSubmit={handleSubmit} ref={formRef}>
                 <div className="mb-3">
                     <label htmlFor="first_name" className="form-label">Nombre: </label>
-                    <input type="first_name" name="first_name" className="form-control"/>
+                    <input type="text" name="first_name" className="form-control"/>
                 </div>
                 <div className="mb-3">
                     <label htmlFor="last_name" className="form-label">Apellido: </label>
-                    <input type="last_name" name="last_name" className="form-control"/>
+                    <input type="text" name="last_name" className="form-control"/>
                 </div>
                 <div className="mb-3">
                     <label htmlFor="age" className="form-label">Edad: </label>
-                    <input type="age" name="age" className="form-control"/>
+                    <input type="number" name="age" className="form-control"/>
                 </div>
                 <div className="mb-3">
                     <label htmlFor="email" className="form-label">Email: </label>
