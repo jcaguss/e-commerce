@@ -5,7 +5,7 @@ export const login = async (req,res) => {
         if(!req.user){
             return res.status(401).send({mensaje: 'Usuario invalido'})
         }
-        // Si siguen con sesiones en BDD, esto ono se borra. Si usan JWT SI 
+        // Si siguen con sesiones en BDD, esto no se borra. Si usan JWT SI 
         // req.session.user = {
         //     first_name: req.user.first_name,
         //     last_name: req.user.last_name,
