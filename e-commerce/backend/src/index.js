@@ -2,6 +2,7 @@ import 'dotenv/config'
 import express from "express";
 import nodemailer from 'nodemailer'
 import cors from 'cors';
+import compression from 'express-compression';
 import mongoose from "mongoose";
 import cookieParser from 'cookie-parser';
 import passport from 'passport';
@@ -94,9 +95,13 @@ app.set('views', path.resolve(__dirname, './views'))//Path
 // app.use('/login', express.static(path.join(__dirname, "/public")))
 // app.use('/realTimeProducts', express.static(path.join(__dirname, "/public")))
 // app.use('/chat', express.static(path.join(__dirname, "/public")))
+//-------compression---------
+app.use(compression({
+    brotli: {endeble:true, zlib: {}}
+}))
 //----------------
 app.use(cookieParser(process.env.SIGNED_COOKIE)) // Firma Cookie
-//----------------
+//------sessions-------
 app.use(session({
     store: MongoStore.create({
         mongoUrl: process.env.MONGO_URL,
@@ -117,6 +122,8 @@ app.use(passport.session())
 
 //----- Rutas -----
 app.use('/', router)
+
+
 
 // // ---- Verificion de Usuario Admin ----
 // const auth = (req,res,next) => {
