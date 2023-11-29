@@ -53,16 +53,25 @@ export const postProduct = async (req,res) => {
         : res.status(500).send({ error: error.code, mensaje:error })
     }
 }
+
 export const putProductById = async (req,res) => {
     const {id} = req.params
     const {title, description, code, price, status, stock, category} = req.body
     try{
+        if(!title || !description || !code || !price || !stock || !category){
+            CustomError.createError({
+                name: "Error al actualizar Producto",
+                cause: generateProductInfo({title, description, code, price, stock, category}),
+                message: "Error al tratar de actualizar un Producto",
+                code: NErrors.INVALID_TYPE_ERROR
+            })
+        }
         const prod = await productModel.findByIdAndUpdate(id, {title, description, code, price, status, stock, category})
         !prod 
         ? res.status(404).send({mensaje: "Producto no encontrado"}) 
         : res.status(200).send({respuesta: 'ok', mensaje: prod})
     }catch(error){
-        res.status(500).send({mensaje:`Error en actualizar producto ${error}`})
+        res.status(500).send({ error: error.code, mensaje:error })
     }
 }
 
