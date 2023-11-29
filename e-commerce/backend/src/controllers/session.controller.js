@@ -5,14 +5,14 @@ export const login = async (req,res) => {
         if(!req.user){
             return res.status(401).send({mensaje: 'Usuario invalido'})
         }
-        // Si siguen con sesiones en BDD, esto no se borra. Si usan JWT SI 
-        // req.session.user = {
+        //Si siguen con sesiones en BDD, esto no se borra. Si usan JWT SI 
+        //req.session.user = {
         //     first_name: req.user.first_name,
         //     last_name: req.user.last_name,
         //     age: req.user.age,
         //     email: req.user.email
-        //     res.status(200).send({mensaje: 'Usuario logueado'})
         // }
+        //res.status(200).send({mensaje: 'Usuario logueado'})
         const token = generateToken(req.user)
         res.status(200).send({token})
     }catch(error){
