@@ -22,11 +22,11 @@ export const postProducts = async (req,res) => {
             productosCreados.push(prod)
         }catch(error){
         error.code == 11000 // -El error code "11000" es de llave duplicada-
-        ? errors.push({mensaje: "Producto ya creado con llave duplicada"})
+        ? errors.push({mensaje: "Producto ya creado con llave duplicada", error:error.keyValue})
         : errors.push({ error: error.code, mensaje:error })
         }        
     }
     errors.length>0
     ? res.status(400).send({mensaje: "Hubo errores al crear algunos productos", errores: errors})
-    : res.status(201).send({respuesta: 'ok', mensaje: "Productos creados", productos: productosCreados})
+    : res.status(201).send({respuesta: 'ok', mensaje: "Productos creados", productos: createdProducts})
 }
