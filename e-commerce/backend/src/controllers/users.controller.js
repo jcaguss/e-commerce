@@ -1,4 +1,7 @@
 import { userModel } from "../models/users.models.js";
+import CustomError from "../services/errors/customErrors.js";
+import NErrors from "../services/errors/enums.js";
+import { generateUserInfo } from "../services/errors/UserInfo.js";
 
 export const getUsers = async (req,res) => {
     try{
@@ -24,14 +27,22 @@ export const getUserById = async (req,res) => {
 
 export const putUserById = async (req,res) => {
     const {id} = req.params
-    const {last_name,first_name,age,email,password} = req.body
+    const {first_name,last_name,age,email,password} = req.body
     try{
+        if(!first_name || !last_name || !age || !email || !password){
+            CustomError.createError({
+                name: "Error al actualizar Usuario",
+                cause: generateUserInfo({first_name,last_name,age,email,password}),
+                message: "Error al tratar de actualizar Usuario",
+                code: NErrors.INVALID_TYPE_ERROR
+            })
+        }
         const user = await userModel.findByIdAndUpdate(id, {last_name,first_name,age,email,password})
         !user 
         ? res.status(404).send({error: "Usuario no encontrado"}) 
         : res.status(200).send({respuesta: 'ok', mensaje: user})
     }catch(error){
-        res.status(500).send({error: `Error en actualizar Usuario ${error}`})
+        res.status(500).send({ error: error.code, mensaje:error })
     }
 }
 

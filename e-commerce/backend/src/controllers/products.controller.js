@@ -53,7 +53,6 @@ export const postProduct = async (req,res) => {
         : res.status(500).send({ error: error.code, mensaje:error })
     }
 }
-
 export const putProductById = async (req,res) => {
     const {id} = req.params
     const {title, description, code, price, status, stock, category} = req.body
