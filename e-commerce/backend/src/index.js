@@ -4,6 +4,7 @@ import nodemailer from 'nodemailer'
 import cors from 'cors';
 import compression from 'express-compression';
 import mongoose from "mongoose";
+import { addLogger } from './config/logger.js';
 import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import initializePassport from './config/passport.js'
@@ -123,6 +124,34 @@ app.use(passport.session())
 //----- Rutas -----
 app.use('/', router)
 
+//----- Loggers -----
+app.use(addLogger)
+
+
+
+
+//-----------------------------------------------------------------
+//---- loggers ----
+app.get('/',(req,res) => {
+    req.logger.fatal('fatal')
+    res.send('fatal')
+})
+app.get('/',(req,res) => {
+    req.logger.error('error')
+    res.send('error')
+})
+app.get('/',(req,res) => {
+    req.logger.warning('warning')
+    res.send('warning')
+})
+app.get('/',(req,res) => {
+    req.logger.info('info')
+    res.send('info')
+})
+app.get('/',(req,res) => {
+    req.logger.debug('debug')
+    res.send('debug')
+})
 
 
 // // ---- Verificion de Usuario Admin ----

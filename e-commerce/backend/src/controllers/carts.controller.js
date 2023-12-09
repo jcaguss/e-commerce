@@ -2,6 +2,9 @@ import { cartModel } from "../models/carts.models.js";
 import { productModel } from "../models/products.models.js";
 import { ticketModel } from "../models/tickets.models.js";
 import { userModel } from "../models/users.models.js";
+import CustomError from "../services/errors/customErrors.js";
+import NErrors from "../services/errors/enums.js";
+
 
 export const getCart = async (req,res) => {
     try{
