@@ -160,36 +160,43 @@ export const deleteProdCart = async (req, res) => {
     }
 }
 
-export const postTicket = async (req,res) => {
+export const posttTicket = async (req,res) => {
     const {cid} = req.params
     try{
         const cart = await cartModel.findById(cid)
         if(cart){
             try{
+                let totalAmount = 0
+                let countProds = cart.products.length
+                let prods = 0
+                let prodsUpdate = {}
                 for(const product of cart.products){
-                    const idProd = product.id_prod._id.toString()
-                    const prod = await productModel.findById(idProd)
-                    console.log(prod)
+                    let idProd = product.id_prod._id.toString()
+                    let prod = await productModel.findById(idProd)
                     if(prod.stock >= product.quantity){
-                        try{
-                            const user = await userModel.findOne({ cart: cid })
-                            const email = user.email
-                            const totalAmount = product.quantity * prod.price
-                            const newStock = prod.stock - product.quantity
-                            await productModel.findByIdAndUpdate(idProd,{stock:newStock})
-                            await ticketModel.create({amount:totalAmount, purchaser:email})
-                            await product.deleteProdtsCart(idProd)
-                            res.status(200).send({mensaje:'Compra Finalizada'})
-                        }catch(error){
-                            res.status(500).send({ error: `Error al encontrar el usuario ${error}` });
-                        }
+                        totalAmount += product.quantity * prod.price
+                        console.log(totalAmount)
+                        let newStock = prod.stock - product.quantity
+                        prodsUpdate[idProd] = newStock;
+                        console.log(prodsUpdate)
+                        prods++
                     }else{
-                        await product.deleteProdtsCart(idProd)
                         res.status(400).send({error:'No hay stock suficiente'})
+                        break
                     }
                 }
+                const user = await userModel.findOne({ cart: cid })
+                const email = user.email
+                console.log(email)
+                if(prods === countProds){
+                    await ticketModel.create({amount:totalAmount, purchaser:email})
+                    for(const idProd in prodsUpdate){
+                        await productModel.findByIdAndUpdate(idProd, {stock: prodsUpdate[idProd]});
+                    }
+                    res.status(200).send({mensaje:'Compra Finalizada'})
+                }
             }catch(error){
-                res.status(500).send({error:`Error al encontrar producto ${error}`})
+                res.status(500).send({error:`Error al crear Ticket ${error}`})
             }
         }
     }catch(error){

@@ -4,7 +4,6 @@ const ticketSchema = new Schema({
     code: {
         type: String,
         default: uuidv4(),
-        unique: true,
     },
     purchase_datetime: {
         type: Date,

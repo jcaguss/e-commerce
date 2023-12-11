@@ -5,6 +5,8 @@ import cors from 'cors';
 import compression from 'express-compression';
 import mongoose from "mongoose";
 import { addLogger } from './config/logger.js';
+// import swaggerJSDoc from 'swagger-jsdoc';
+// import { swaggerUiOptions } from 'swagger-ui-express';
 import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import initializePassport from './config/passport.js'
@@ -70,6 +72,17 @@ app.get('/mail', async(req,res) =>{
     res.send('Email enviado')
 })
 
+//---------
+
+// const swaggerOptions = {
+//     definition: {
+//         openai:'3.1.0',
+//         info: {
+//             title: 'Documentacion del curso de Backend',
+//             description: 'Api Coder Backend'
+//         }
+//     }
+// }
 
 
 // ---- BBD ----
@@ -88,14 +101,9 @@ app.use(cors(corsOptions))
 app.use(express.json())
 app.use(express.urlencoded({ extended:true }))
 //----------------
-// app.engine("handlebars", engine()) // img
-//----------------
-// app.set('view engine', 'handlebars')
 app.set('views', path.resolve(__dirname, './views'))//Path
 //----------------
 // app.use('/login', express.static(path.join(__dirname, "/public")))
-// app.use('/realTimeProducts', express.static(path.join(__dirname, "/public")))
-// app.use('/chat', express.static(path.join(__dirname, "/public")))
 //-------compression---------
 app.use(compression({
     brotli: {endeble:true, zlib: {}}
@@ -127,10 +135,9 @@ app.use('/', router)
 //----- Loggers -----
 app.use(addLogger)
 
+//-----------------
 
 
-
-//-----------------------------------------------------------------
 //---- loggers ----
 app.get('/',(req,res) => {
     req.logger.fatal('fatal')
@@ -154,23 +161,10 @@ app.get('/',(req,res) => {
 })
 
 
-// // ---- Verificion de Usuario Admin ----
-// const auth = (req,res,next) => {
-//     if(req.session.email == 'admin@admin.com' && res.session.password == '1234'){
-//         return next()
-//     }
-//     res.send("No tienes acceso a esta Ruta")
-// }
-
-
-
-
-
 // ---- Server socket.io ----
 
 // const io = new Server(server)
 // const mensajes = []
-// const prods = []
 // io.on('connection', (socket) => {
 //     console.log("Servidor Socket.io conectado")
 //     socket.on('mensajeConexion', (user) => {
@@ -186,55 +180,8 @@ app.get('/',(req,res) => {
 //         mensajes.push(infoMensaje)
 //         socket.emit('mensajes', mensajes)
 //     })
-
-//     socket.on('nuevoProducto', (nuevoProd) => {
-//         prods.push(nuevoProd)
-//         socket.emit('prods', prods)
-//     })
 // })
 
-
-// app.get('setCookie',(req,res)=>{
-//     res.cookie('CookieCookie','Esto es una cookie',{ maxAge:10000, signed: true }).send('Cookie generada')
-// })
-
-
-// app.get('getCookie',(req,res)=>{
-//     res.send(req.signedCookies)
-// })
-
-// app.get('/session', (req,res) => {
-//     if(req.session.counter){
-//         req.session.counter++
-//         res.send(`Ingreso ${req.session.counter} veces`)
-//     } else {
-//         req.session.counter = 1
-//         res.send("Ingreso por Primera vez")
-//     }
-// })
-
-
-
-// app.get('/admin', (req,res)=>{
-//     res.send('Soy Admin')
-// })
-
-
-// app.get('/login',(req,res)=>{
-//     res.render('login',{
-//         css: 'login.css',
-//         title: "login-e-commerce",
-//         js: "login.js"
-//     })
-// })
-
-// app.get('/realTimeProducts', (req, res) => {
-//     res.render('realTimeProducts', {
-//         css: "style.css",
-//         title: "Products",
-//         js: "realTimeProducts.js"
-//     })
-// })
 // app.get('/chat', (req, res) => {
 //     res.render('chat', {
 //         css: "style.css",
