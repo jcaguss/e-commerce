@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getCart, getCartById, postCart, deleteProdtsCart, putCartById, postProdCart, putProdCart, deleteProdCart, posttTicket } from "../controllers/carts.controller.js";
+import { getCart, getCartById, postCart, deleteProdtsCart, putCartById, postProdCart, putProdCart, deleteProdCart, postTicket } from "../controllers/carts.controller.js";
 import { passportError, authorization } from "../utils/messagesError.js";
 
 
@@ -12,7 +12,7 @@ cartRouter.put('/:id', putCartById)
 cartRouter.post('/:cid/products/:pid', postProdCart)
 cartRouter.put('/:cid/products/:pid', putProdCart)
 cartRouter.delete('/:cid/products/:pid', deleteProdCart);
-cartRouter.post('/:cid/purchase',posttTicket)
+cartRouter.post('/:cid/purchase',postTicket)
 
 
 export default cartRouter

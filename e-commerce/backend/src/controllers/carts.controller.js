@@ -160,7 +160,7 @@ export const deleteProdCart = async (req, res) => {
     }
 }
 
-export const posttTicket = async (req,res) => {
+export const postTicket = async (req,res) => {
     const {cid} = req.params
     try{
         const cart = await cartModel.findById(cid)
@@ -175,10 +175,8 @@ export const posttTicket = async (req,res) => {
                     let prod = await productModel.findById(idProd)
                     if(prod.stock >= product.quantity){
                         totalAmount += product.quantity * prod.price
-                        console.log(totalAmount)
                         let newStock = prod.stock - product.quantity
                         prodsUpdate[idProd] = newStock;
-                        console.log(prodsUpdate)
                         prods++
                     }else{
                         res.status(400).send({error:'No hay stock suficiente'})
@@ -187,13 +185,14 @@ export const posttTicket = async (req,res) => {
                 }
                 const user = await userModel.findOne({ cart: cid })
                 const email = user.email
-                console.log(email)
                 if(prods === countProds){
-                    await ticketModel.create({amount:totalAmount, purchaser:email})
-                    for(const idProd in prodsUpdate){
-                        await productModel.findByIdAndUpdate(idProd, {stock: prodsUpdate[idProd]});
+                    const ticket = await ticketModel.create({amount:totalAmount, purchaser:email})
+                    if(ticket){
+                        for(const idProd in prodsUpdate){
+                            await productModel.findByIdAndUpdate(idProd, {stock: prodsUpdate[idProd]});
+                        }
+                        res.status(200).send({mensaje:'Compra Finalizada'})
                     }
-                    res.status(200).send({mensaje:'Compra Finalizada'})
                 }
             }catch(error){
                 res.status(500).send({error:`Error al crear Ticket ${error}`})
