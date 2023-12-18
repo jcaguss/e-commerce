@@ -30,4 +30,4 @@ CMD [ "node", "src/index.js"]
 
 # Comando para compilar: docker build -t index.js .
 
-# Comando para ejecutar: docker run -p 8080:8080 index.js
+# Comando para ejecutar: docker run -p 8000:8000 index.js
