@@ -22,7 +22,7 @@ RUN npm install
 
 # Puerto de la app
 
-EXPOSE 8080
+EXPOSE 8000
 
 #Comando para iniciar mi app
 
