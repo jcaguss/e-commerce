@@ -1,4 +1,4 @@
-apiVercion: v1
+apiVersion: v1
 kind: Service
 metadata:
   name: kubeservice
@@ -8,24 +8,25 @@ spec:
   ports:
     - port: 80
       targetPort: 8080
-    type: LoadBalancer
+  type: LoadBalancer
 ---
-apiVercion: apps/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kubedeploy
 spec:
   replicas: 5
   selector:
-    mathLabels: 
+    matchLabels: 
       app: kubeusers
   template:
     metadata: 
       labels:
         app: kubeusers
     spec: 
-      - name: test
-        image: jcaguss/test:1.0.0
-        ports:
-          - containerPort: 8080
-          ImagePullPolicy: Always 
+      containers:
+        - name: test
+          image: jcaguss/test:1.0.0
+          ports:
+            - containerPort: 8080
+          imagePullPolicy: Always 
