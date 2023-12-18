@@ -7,12 +7,12 @@ const cartRouter = Router()
 cartRouter.get('/', getCart)
 cartRouter.get('/:id', getCartById)
 cartRouter.post('/', postCart)
-cartRouter.delete('/:id', deleteProdtsCart)
-cartRouter.put('/:id', putCartById)
-cartRouter.post('/:cid/products/:pid', postProdCart)
-cartRouter.put('/:cid/products/:pid', putProdCart)
-cartRouter.delete('/:cid/products/:pid', deleteProdCart);
-cartRouter.post('/:cid/purchase',postTicket)
+cartRouter.delete('/:id', passportError('jwt'), authorization('user'), deleteProdtsCart)
+cartRouter.put('/:id', passportError('jwt'), authorization('user'), putCartById)
+cartRouter.post('/:cid/products/:pid', passportError('jwt'), authorization('user'), postProdCart)
+cartRouter.put('/:cid/products/:pid', passportError('jwt'), authorization('user'), putProdCart)
+cartRouter.delete('/:cid/products/:pid', passportError('jwt'), authorization('user'), deleteProdCart);
+cartRouter.post('/:cid/purchase', passportError('jwt'), authorization('user'), postTicket)
 
 
 export default cartRouter

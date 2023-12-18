@@ -7,7 +7,7 @@ const userRouter = Router();
 
 userRouter.get('/', getUsers)  
 userRouter.get('/:id', getUserById)
-userRouter.put('/:id', putUserById)
+userRouter.put('/:id',passportError('jwt'), authorization('Admin'), putUserById)
 userRouter.delete('/:id',passportError('jwt'), authorization('Admin'), deleteUserById)
 
 export default userRouter
