@@ -186,6 +186,7 @@ export const postTicket = async (req,res) => {
                 const user = await userModel.findOne({ cart: cid })
                 const email = user.email
                 if(prods === countProds){
+                    if (user.rol === 'premium') totalAmount * 0.90
                     const ticket = await ticketModel.create({amount:totalAmount, purchaser:email})
                     if(ticket){
                         for(const idProd in prodsUpdate){

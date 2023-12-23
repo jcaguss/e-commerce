@@ -5,8 +5,8 @@ import cors from 'cors';
 import compression from 'express-compression';
 import mongoose from "mongoose";
 import { addLogger } from './config/logger.js';
-// import swaggerJSDoc from 'swagger-jsdoc';
-// import { swaggerUiOptions } from 'swagger-ui-express';
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUiExpress from 'swagger-ui-express';
 import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import initializePassport from './config/passport.js'
@@ -74,15 +74,19 @@ app.get('/mail', async(req,res) =>{
 
 //---------
 
-// const swaggerOptions = {
-//     definition: {
-//         openai:'3.1.0',
-//         info: {
-//             title: 'Documentacion del curso de Backend',
-//             description: 'Api Coder Backend'
-//         }
-//     }
-// }
+const swaggerOptions = {
+    definition: {
+        openapi:'3.1.0',
+        info: {
+            title: 'Documentacion del curso de Backend',
+            description: 'Api Coder Backend'
+        }
+    },
+    apis: [`${__dirname}/docs/**/*.yaml`] //** indica una subcarpeta que no importa el nombre, *. no interesa el nombre si la extencion 
+}
+
+const specs = swaggerJSDoc(swaggerOptions)
+app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 
 
 // ---- BBD ----
@@ -135,10 +139,7 @@ app.use('/', router)
 //----- Loggers -----
 app.use(addLogger)
 
-//-----------------
-
-
-//---- loggers ----
+//---------------------------
 app.get('/',(req,res) => {
     req.logger.fatal('fatal')
     res.send('fatal')

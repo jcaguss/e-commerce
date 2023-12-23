@@ -1,0 +1,50 @@
+paths: 
+  /api/carts/{cid}/products/{pid}:  
+    post:
+      summary: Agregar un producto al carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          schema:
+            $type: String
+            description: ID del Carrito
+        - name: pid
+          in: path
+          required: true
+          schema:
+            $type: String
+            description: ID del Producto
+      responses:
+        '200':
+          description: Producto agregado correctamente
+          content: 
+            application/json:
+              schema: 
+                items:
+                  $ref: '#/components/schemas/Cart'
+        '500':
+          description: Error interno del servidor
+components:
+  schemas:
+    Cart: 
+      type: object
+      properties:
+        _id: 
+          type: 0bjectId
+          description: ID autogenerado por MongoDb
+        products:
+          type: array
+          description: Lista de productos
+      example:
+        _id: ObjectId('312h43af52d34d6asdf312')
+        products: [ 
+          {
+          id_prod: ObjectId('2x4fds72vbb80cvv46sdn2'),
+          quantity: 3 
+          }
+          ]
+        
+    
