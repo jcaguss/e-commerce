@@ -1,6 +1,6 @@
 import "dotenv/config";
 import express from "express";
-import nodemailer from "nodemailer";
+// import nodemailer from "nodemailer";
 import cors from "cors";
 import compression from "express-compression";
 import mongoose from "mongoose";
@@ -38,39 +38,40 @@ const PORT = 8080;
 const server = app.listen(PORT, () => {
   console.log(`Server on port ${PORT}`);
 });
+// ---------  Nodemailer  ---------
 
-let transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
-  auth: {
-    user: "jcaceresm1999@gmail.com",
-    pass: process.env.PASSWORD_EMAIL,
-    authMethod: "LOGIN",
-  },
-});
+// let transporter = nodemailer.createTransport({
+//   host: "smtp.gmail.com",
+//   port: 465,
+//   secure: true,
+//   auth: {
+//     user: "jcaceresm1999@gmail.com",
+//     pass: process.env.PASSWORD_EMAIL,
+//     authMethod: "LOGIN",
+//   },
+// });
 
-app.get("/mail", async (req, res) => {
-  const respuesta = await transporter.sendMail({
-    from: "TEST MAIL jcaceresm1999@gmail.com",
-    to: "jcaceresm1999@gmail.com",
-    subject: "Hola, buenas tardes",
-    html: `
-            <div>
-                <h1>Mi Primer Mail</h1>
-            </div>
-        `,
-    attachments: [
-      {
-        filename: "msRobot.jpg",
-        path: __dirname + "/img/msRobot.jpg",
-        cid: "msRobot.jpg",
-      },
-    ],
-  });
-  console.log(respuesta);
-  res.send("Email enviado");
-});
+// app.get("/mail", async (req, res) => {
+//   const respuesta = await transporter.sendMail({
+//     from: "TEST MAIL jcaceresm1999@gmail.com",
+//     to: "jcaceresm1999@gmail.com",
+//     subject: "Hola, buenas tardes",
+//     html: `
+//             <div>
+//                 <h1>Mi Primer Mail</h1>
+//             </div>
+//         `,
+//     attachments: [
+//       {
+//         filename: "msRobot.jpg",
+//         path: __dirname + "/img/msRobot.jpg",
+//         cid: "msRobot.jpg",
+//       },
+//     ],
+//   });
+//   console.log(respuesta);
+//   res.send("Email enviado");
+// });
 
 //---------
 

@@ -47,7 +47,7 @@ export const deleteProdtsCart = async(req,res)=> {
         const cart = await cartModel.findById(id)
         !cart 
         ? res.status(404).send({error: "Carrito no encontrado"}) 
-        : cart = cart.products[{}];
+        : cart = cart.products[{}]
         res.status(200).send({respuesta: 'ok', mensaje: cart}) 
     }catch(error){
         res.status(500).send({error: `Error al eliminar carrito ${error}`})
@@ -179,6 +179,7 @@ export const postTicket = async (req,res) => {
                         prodsUpdate[idProd] = newStock;
                         prods++
                     }else{
+                        await cartModel.deleteProdCart(cid,idProd)
                         res.status(400).send({error:'No hay stock suficiente'})
                         break
                     }
@@ -192,6 +193,7 @@ export const postTicket = async (req,res) => {
                         for(const idProd in prodsUpdate){
                             await productModel.findByIdAndUpdate(idProd, {stock: prodsUpdate[idProd]});
                         }
+                        await cartModel.deleteProdtsCart(cid)
                         res.status(200).send({mensaje:'Compra Finalizada'})
                     }
                 }
