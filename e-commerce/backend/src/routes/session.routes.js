@@ -10,6 +10,6 @@ sessionRouter.post('/register', passport.authenticate('register'), register)
 sessionRouter.get('/github', passport.authenticate(('github'), {scope: ['user:email']}), getGitHubLogin)
 sessionRouter.get('/githubCallback', passport.authenticate(('github')), getGitHubRegister)
 sessionRouter.get('/logaut', getLogaut)
-sessionRouter.get('/current', passportError('jwt'), authorization('user'), getCurrent)
+sessionRouter.get('/current', passportError('jwt'), authorization('admin'), getCurrent)
 
 export default sessionRouter;

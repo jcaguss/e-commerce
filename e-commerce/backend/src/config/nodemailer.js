@@ -28,4 +28,3 @@ export const sendRecoveryMail = (email, recoveryLink) => {
         error ? console.log(error) : console.log('Email enviado correctamente')
     })
 }
-  

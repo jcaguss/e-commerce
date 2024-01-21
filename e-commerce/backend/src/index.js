@@ -19,7 +19,7 @@ import { __dirname } from "./path.js";
 import path from "path";
 
 
-const whiteList = ["http://localhost:5173"];
+const whiteList = ["http://localhost:5174"];
 
 const corsOptions = {
   origin: function (origin, callback) {
@@ -142,7 +142,6 @@ app.use("/", router);
 
 //----- Loggers -----
 app.use(addLogger);
-
 //---------------------------
 app.get("/info", (req, res) => {
   req.logger.info(

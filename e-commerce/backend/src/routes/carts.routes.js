@@ -5,7 +5,7 @@ import { passportError, authorization } from "../utils/messagesError.js";
 
 const cartRouter = Router()
 cartRouter.get('/', getCart)
-cartRouter.get('/:id', getCartById)
+cartRouter.get('/:id', passportError('jwt'), authorization('user'), getCartById)
 cartRouter.post('/', postCart)
 cartRouter.delete('/:id', passportError('jwt'), authorization('user'), deleteProdtsCart)
 cartRouter.put('/:id', passportError('jwt'), authorization('user'), putCartById)
