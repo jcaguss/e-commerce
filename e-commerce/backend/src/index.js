@@ -18,8 +18,7 @@ import MongoStore from "connect-mongo";
 import { __dirname } from "./path.js";
 import path from "path";
 
-
-const whiteList = ["http://localhost:5174"];
+const whiteList = ["http://localhost:5175"];
 
 const corsOptions = {
   origin: function (origin, callback) {
@@ -35,9 +34,13 @@ const corsOptions = {
 const app = express();
 const PORT = 8080;
 
-const server = app.listen(PORT, () => {
+app.listen(PORT, () => {
   console.log(`Server on port ${PORT}`);
 });
+
+console.log(__dirname)
+
+
 // ---------  Nodemailer  ---------
 
 // let transporter = nodemailer.createTransport({
@@ -161,9 +164,7 @@ app.get("/error", (req, res) => {
 });
 
 app.get("/fatal", (req, res) => {
-  req.logger.fatal(
-    '<span style="color:red">Texto Fatal</span><br/>'
-  );
+  req.logger.fatal('<span style="color:red">Texto Fatal</span><br/>');
   res.send("fatal");
 });
 

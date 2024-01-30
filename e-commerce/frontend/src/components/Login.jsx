@@ -10,7 +10,6 @@ export const Login = () => {
         e.preventDefault()
         const dataForm = new FormData(formRef.current) // Tranforma un html a un Objeto Iterador
         const data = Object.fromEntries(dataForm)// Tranforma un Objeto Iterador a Objeto Simple
-        console.log(data)
         const response = await fetch('http://localhost:8080/api/sessions/login',{
             method:'POST',
             headers:{

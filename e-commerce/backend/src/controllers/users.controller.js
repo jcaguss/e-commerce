@@ -3,10 +3,10 @@ import CustomError from "../services/errors/customErrors.js";
 import NErrors from "../services/errors/enums.js";
 import { generateUserInfo } from "../services/errors/UserInfo.js";
 import { sendRecoveryMail } from "../config/nodemailer.js";
-import {createHash} from "../utils/bcrypt.js"
-import crypto from 'crypto'
+import { createHash } from "../utils/bcrypt.js";
+import crypto from "crypto";
 
-const recoveryLinks = {}
+const recoveryLinks = {};
 
 export const getUsers = async (req, res) => {
   try {
@@ -89,29 +89,30 @@ export const passwRec = (req, res) => {
   }
 };
 export const accPassRec = async (req, res) => {
-    const {token} = req.params
-    const {newPassword,newPassword2} = req.body
-    try {
-        const linkData = recoveryLinks[token]
-        if(linkData && Date.now() - linkData.timestamp <= 3600000){
-            const {email} = linkData
-            if(newPassword == newPassword2){
-                // modificar user con nueva contraseña
-                const user = await userModel.findOne({email: email})
-                const id = user._id.toString()
-                const passwordHash = createHash(newPassword.toString())
-                console.log(passwordHash)
-                await userModel.findByIdAndUpdate(id,{password: passwordHash})
-                delete recoveryLinks[token]
-                res.status(200).send("Contraseña modificada correctamente")
-            }else{
-                res.status(400).send("Las contraseñas deben ser identicas")
-            }
-        }else{
-            res.status(400).send("Token invalido o expirado. Intente nuevamente.")
-        }
-        
-    } catch (error) {
-        res.status(500).send(`Error al modificar contraseña ${error}`)
+  const { token } = req.params;
+  const { newPassword, newPassword2 } = req.body;
+  try {
+    const linkData = recoveryLinks[token];
+    if (linkData && Date.now() - linkData.timestamp <= 3600000) {
+      const { email } = linkData;
+      if (newPassword == newPassword2) {
+        // modificar user con nueva contraseña
+        const user = await userModel.findOne({ email: email });
+        const id = user._id.toString();
+        const passwordHash = createHash(newPassword.toString());
+        console.log(passwordHash);
+        await userModel.findByIdAndUpdate(id, { password: passwordHash });
+        delete recoveryLinks[token];
+        res.status(200).send("Contraseña modificada correctamente");
+      } else {
+        res.status(400).send("Las contraseñas deben ser identicas");
+      }
+    } else {
+      res.status(400).send("Token invalido o expirado. Intente nuevamente.");
     }
+  } catch (error) {
+    res.status(500).send(`Error al modificar contraseña ${error}`);
+  }
 };
+
+
