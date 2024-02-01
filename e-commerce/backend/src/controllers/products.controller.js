@@ -1,5 +1,5 @@
 import { productModel } from "../models/products.models.js";
-import customError from "../services/errors/customErrors.js";
+import CustomError from "../services/errors/customErrors.js";
 import { generateProductInfo } from "../services/errors/ProductInfo.js";
 import NErrors from "../services/errors/enums.js";
 
@@ -36,7 +36,7 @@ export const postProduct = async (req,res) => {
     
     try{
         if(!title || !description || !code || !price || !stock || !category){
-            customError.createError({
+            CustomError.createError({
                 name: "Error al crear Producto",
                 cause: generateProductInfo({title, description, code, price, stock, category}),
                 message: "Error al tratar de crear un Producto",
@@ -59,7 +59,7 @@ export const putProductById = async (req,res) => {
     const {title, description, code, price, status, stock, category} = req.body
     try{
         if(!title || !description || !code || !price || !stock || !category){
-            customError.createError({
+            CustomError.createError({
                 name: "Error al actualizar Producto",
                 cause: generateProductInfo({title, description, code, price, stock, category}),
                 message: "Error al tratar de actualizar un Producto",
