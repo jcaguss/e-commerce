@@ -4,13 +4,14 @@ import NErrors from "../services/errors/enums.js";
 import { generateUserInfo } from "../services/errors/UserInfo.js";
 import { sendRecoveryMail } from "../config/nodemailer.js";
 import { createHash } from "../utils/bcrypt.js";
+import { deletedUsersMail } from "../config/nodemailer.js"
 import crypto from "crypto";
 
 const recoveryLinks = {};
 
 export const getUsers = async (req, res) => {
   try {
-    const users = await userModel.find();
+    const users = await userModel.find({}, 'first_name email rol -_id')
     res.status(200).send({ respuesta: "ok", mensaje: users });
   } catch (error) {
     res.status(500).send({ error: `Error al consultar usuarios ${error}` });
@@ -100,7 +101,6 @@ export const accPassRec = async (req, res) => {
         const user = await userModel.findOne({ email: email });
         const id = user._id.toString();
         const passwordHash = createHash(newPassword.toString());
-        console.log(passwordHash);
         await userModel.findByIdAndUpdate(id, { password: passwordHash });
         delete recoveryLinks[token];
         res.status(200).send("Contraseña modificada correctamente");
@@ -115,4 +115,24 @@ export const accPassRec = async (req, res) => {
   }
 };
 
+export const deleteInactiveUsers = async (req, res) => {
+  const limit = new Date(Date.now() - 2 * 24 * 60 * 60 * 1000)
+  let deletedUsersEmails = []
+
+  try {
+
+    const usersToDelete = await userModel.find({ last_connection: { $lt: limit }, rol: { $ne: 'admin' }})
+
+    deletedUsersEmails = usersToDelete.map(user => user.email)
+
+    for (const emailUser of deletedUsersEmails) {
+      deletedUsersMail(emailUser)
+    }
+
+    await userModel.deleteMany({ last_connection: { $lt: limit }, rol: { $ne: 'admin' }})
+    res.status(200).send({ mensaje: 'Usuarios inactivos eliminados con éxito'})
+  } catch (error) {
+    res.status(500).send({ mensaje: 'Hubo un error al eliminar los usuarios inactivos', error })
+  }
+};
 

@@ -12,16 +12,18 @@ const JWTStrategy = jwt.Strategy;
 const ExtractJWT = jwt.ExtractJwt;
 
 const initializePassport = () => {
-  const cookieEstractor = (req) => {
-    const token = req.headers.authorization ? req.headers.authorization : {};
-    return token;
-  };
+  const cookieExtractor = req => {
+    const token = req.headers.authorization ? req.headers.authorization : {}
+    //const token = req.cookies.jwtCookie ? req.cookies.jwtCookie : {}
+    console.log("cookieExtractor", token)
+    return token
+}
 
   passport.use(
     "jwt",
     new JWTStrategy(
       {
-        jwtFromRequest: ExtractJWT.fromExtractors([cookieEstractor]), //El token va a venir desde cookieExtractor
+        jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]), //El token va a venir desde cookieExtractor
         secretOrKey: process.env.JWT_SECRET,
       },
       async (jwt_payload, done) => {
@@ -127,7 +129,7 @@ const initializePassport = () => {
   });
   // ---- Eliminamos la session del usuario ----
   passport.deserializeUser(async (id, done) => {
-    const user = await userModel.findOne({ id });
+    const user = await userModel.findById( id );
     done(null, user);
   });
 };

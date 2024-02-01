@@ -12,6 +12,6 @@ router.use('/api/users', userRouter)
 router.use('/api/products', productRouter)
 router.use('/api/mockingproducts', mockingProductsRouter)
 router.use('/api/carts', cartRouter)
-router.use('/api/sessions', sessionRouter)
+router.use('/api/session', sessionRouter)
 
 export default router
