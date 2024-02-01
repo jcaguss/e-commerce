@@ -1,7 +1,7 @@
 import { productModel } from "../models/products.models.js";
-import NErrors from "../services/errors/enums.js";
+import NErrors from "../services/enums.js";
 import { generateProductInfo } from "../services/errors/ProductInfo.js";
-import CustomError from "../services/errors/customErrors.js";
+import CustomError from "../services/customErrors.js";
 
 export const postProducts = async (req,res) => {
     const prods = req.body

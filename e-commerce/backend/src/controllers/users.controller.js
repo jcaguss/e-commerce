@@ -1,6 +1,6 @@
 import { userModel } from "../models/users.models.js";
-import CustomError from "../services/errors/customErrors.js";
-import NErrors from "../services/errors/enums.js";
+import CustomError from "../services/customErrors.js";
+import NErrors from "../services/enums.js";
 import { generateUserInfo } from "../services/errors/UserInfo.js";
 import { sendRecoveryMail } from "../config/nodemailer.js";
 import { createHash } from "../utils/bcrypt.js";
