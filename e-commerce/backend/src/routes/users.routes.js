@@ -6,7 +6,7 @@ import { upload } from "../config/multer.js";
 
 const userRouter = Router();
 
-userRouter.get('/', passportError('jwt'), authorization('user'), getUsers)
+userRouter.get('/', getUsers)
 userRouter.get('/:id', passportError('jwt'), authorization('admin'), getUserById)
 userRouter.put('/:id', passportError('jwt'), authorization('admin'), putUserById)
 userRouter.delete('/deleteInactiveUsers', passportError('jwt'), authorization('admin'), deleteInactiveUsers)
