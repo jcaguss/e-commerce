@@ -35,7 +35,7 @@ export const postProduct = async (req,res) => {
     const {title, description, code, price, stock, category} = req.body
     
     try{
-        if(!title || !description || !code || !price || !stock || !category){
+        if(!title || !description || !code || !price || !stock || !category || price < 1 || stock < 1 || title == ""){
             CustomError.createError({
                 name: "Error al crear Producto",
                 cause: generateProductInfo({title, description, code, price, stock, category}),
@@ -58,7 +58,7 @@ export const putProductById = async (req,res) => {
     const {id} = req.params
     const {title, description, code, price, status, stock, category} = req.body
     try{
-        if(!title || !description || !code || !price || !stock || !category){
+        if(!title || !description || !code || !price || !stock || !category || price < 1 || stock < 1 || title == ""){
             CustomError.createError({
                 name: "Error al actualizar Producto",
                 cause: generateProductInfo({title, description, code, price, stock, category}),

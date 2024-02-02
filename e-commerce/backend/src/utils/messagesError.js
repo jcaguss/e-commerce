@@ -19,7 +19,7 @@ export const passportError = (strategy) => { //Voy a enviar local, github o jwt
 }
 
 //Recibo un rol y establezco la capacidad del usuario
-export const authorization = (rol) => { //rol = 'Admin' desde ruta 'Crear Producto'
+export const authorization = (rol) => { //rol = 'admin' desde ruta 'Crear Producto'
     return async (req, res, next) => {
 
         if (!req.user) {
